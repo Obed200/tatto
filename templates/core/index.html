@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load humanize %}
 
 {% block title %}TATTO MARK INVESTMENT{% endblock %}
@@ -6,7 +7,7 @@
 {% block content %}
 <section class="hero">
     <div class="hero-copy">
-        <p class="eyebrow">A continuous investment platform</p>
+        <p class="eyebrow">Tatto Mark An investment platform</p>
         <h1>TATTO MARK INVESTMENT</h1>
         <p class="hero-line">Grow Consistently. Earn Daily. Build Your Future.</p>
         <div class="hero-actions">
@@ -17,18 +18,17 @@
             {% endif %}
         </div>
     </div>
-    <div class="hero-panel">
-        <span class="book-icon">TMI</span>
-        <strong>Your Tatto Mark Investment for financial freedom</strong>
+    <div class="hero-panel hero-flyer-panel">
+        <a class="hero-flyer-link" href="{% static 'images/tatto-flyer.jpg' %}" target="_blank" rel="noopener" aria-label="Open the full-size Tatto Mark Investment plans flyer">
+            <picture>
+                <source srcset="{% static 'images/tatto-flyer.webp' %}" type="image/webp">
+                <img class="hero-flyer" src="{% static 'images/tatto-flyer.jpg' %}" alt="Tatto Mark Investment plans flyer: TATTO LEV 1-14 pricing, commission 10%, welcome bonus 10%" width="900" height="1350" loading="eager">
+            </picture>
+        </a>
     </div>
 </section>
 
-<section class="feature-strip">
-    <article><span>UP</span><h3>Daily Income</h3><p>Earn every day on your investment.</p></article>
-    <article><span>OK</span><h3>Safe & Secure</h3><p>Every operation is reviewed by administrators.</p></article>
-    <article><span>RE</span><h3>Continuous Growth</h3><p>Reinvest and keep building steadily.</p></article>
-    <article><span>TR</span><h3>Trust & Transparency</h3><p>Clear products with no hidden charges.</p></article>
-</section>
+
 
 <section class="section-head">
     <p class="eyebrow">Investment products</p>
@@ -94,5 +94,11 @@
             {% if not site_settings.whatsapp_community_link and not site_settings.telegram_community_link %}<p>Community links will be added soon.</p>{% endif %}
         </div>
     </article>
+</section>
+<section class="feature-strip">
+    <article><span>UP</span><h3>Daily Income</h3><p>Earn every day on your investment.</p></article>
+    <article><span>OK</span><h3>Safe & Secure</h3><p>Every operation is reviewed by administrators.</p></article>
+    <article><span>RE</span><h3>Continuous Growth</h3><p>Reinvest and keep building steadily.</p></article>
+    <article><span>TR</span><h3>Trust & Transparency</h3><p>Clear products with no hidden charges.</p></article>
 </section>
 {% endblock %}

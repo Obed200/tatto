@@ -186,16 +186,35 @@ nav a:hover { background: var(--brand-grad-soft); color: var(--brand-light); }
 .btn.full { width: 100%; }
 .btn.sm { min-height: 38px; padding: 8px 14px; font-size: 13px; border-radius: 10px; }
 
-.password-toggle {
-    margin-left: 8px;
-    padding: 9px 12px;
-    border-radius: 10px;
-    border: 1px solid var(--line);
-    background: var(--surface);
-    color: var(--ink);
-    cursor: pointer;
-    font-weight: 700;
+.password-field {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
+.password-field input { padding-right: 44px; }
+
+.password-toggle {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+}
+.password-toggle:hover,
+.password-toggle:focus-visible {
+    color: var(--brand-light);
+    background: rgba(34, 197, 94, .14);
+}
+.password-toggle svg { pointer-events: none; }
 
 /* ------------------------------ Layout ------------------------------ */
 .page {
@@ -282,6 +301,39 @@ nav a:hover { background: var(--brand-grad-soft); color: var(--brand-light); }
     font-size: 21px;
     line-height: 1.3;
     font-weight: 600;
+}
+
+.hero-flyer-panel {
+    padding: 12px;
+    align-items: stretch;
+    justify-content: stretch;
+}
+.hero-flyer-link {
+    display: block;
+    width: 100%;
+    line-height: 0;
+    border-radius: 14px;
+    overflow: hidden;
+}
+.hero-flyer {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 70vh;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 14px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.5);
+    transition: transform .25s ease;
+}
+.hero-flyer-link:hover .hero-flyer,
+.hero-flyer-link:focus-visible .hero-flyer { transform: scale(1.03); }
+
+@media (max-width: 960px) {
+    .hero-flyer { max-height: 460px; }
+}
+@media (max-width: 420px) {
+    .hero-flyer { max-height: 380px; }
 }
 
 .book-icon {

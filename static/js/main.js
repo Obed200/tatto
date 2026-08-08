@@ -61,28 +61,36 @@ function setupReferralShare() {
 
 document.addEventListener('DOMContentLoaded', setupReferralShare);
 
+const EYE_ICON = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYE_OFF_ICON = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M6.61 6.61A18.5 18.5 0 0 0 1 12s4 8 11 8a9.26 9.26 0 0 0 5.39-1.61M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+
 function setupPasswordToggles() {
 	const pwdInputs = document.querySelectorAll('input[type="password"]');
 	pwdInputs.forEach((input) => {
 		if (input.dataset.pwtAttached) return;
 		input.dataset.pwtAttached = '1';
+
+		// Wrap the input so the eye icon can sit inside it, right-aligned.
+		const wrap = document.createElement('div');
+		wrap.className = 'password-field';
+		input.insertAdjacentElement('beforebegin', wrap);
+		wrap.appendChild(input);
+
 		const btn = document.createElement('button');
 		btn.type = 'button';
 		btn.className = 'password-toggle';
-		btn.setAttribute('aria-label', 'Toggle password visibility');
-		btn.textContent = 'Show';
+		btn.setAttribute('aria-label', 'Show password');
+		btn.setAttribute('aria-pressed', 'false');
+		btn.innerHTML = EYE_ICON;
 		btn.addEventListener('click', () => {
-			if (input.type === 'password') {
-				input.type = 'text';
-				btn.textContent = 'Hide';
-			} else {
-				input.type = 'password';
-				btn.textContent = 'Show';
-			}
+			const nowVisible = input.type === 'password';
+			input.type = nowVisible ? 'text' : 'password';
+			btn.innerHTML = nowVisible ? EYE_OFF_ICON : EYE_ICON;
+			btn.setAttribute('aria-label', nowVisible ? 'Hide password' : 'Show password');
+			btn.setAttribute('aria-pressed', nowVisible ? 'true' : 'false');
 			input.focus();
 		});
-		// Insert after the input field
-		input.insertAdjacentElement('afterend', btn);
+		wrap.appendChild(btn);
 	});
 }
 
