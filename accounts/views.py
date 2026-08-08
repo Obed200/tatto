@@ -11,7 +11,7 @@ from core.models import SiteSettings
 from .forms import PhoneLoginForm, ProfileForm, RegisterForm
 
 
-def register(request):
+def register(request): 
     if request.user.is_authenticated:
         return redirect("dashboard:user_dashboard")
     initial = {}
@@ -30,7 +30,7 @@ def register(request):
             form.add_error("phone_number", "An account with this phone number already exists.")
         else:
             login(request, user)
-            messages.success(request, "Welcome to Ribural Investments. Your account is ready.")
+            messages.success(request, "Welcome to Tatto Mark Investment. Your account is ready.")
             return redirect("dashboard:user_dashboard")
     return render(request, 'accounts/register.html', {"form": form})
 

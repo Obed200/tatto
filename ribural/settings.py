@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+from decimal import Decimal
 from pathlib import Path
 from decouple import Csv, config
 
@@ -144,3 +145,5 @@ LOGOUT_REDIRECT_URL = 'core:index'
 
 PAYMENT_CODE = config('PAYMENT_CODE', default='1586407')
 PAYMENT_USSD = config('PAYMENT_USSD', default=f'*182*8*1*{PAYMENT_CODE}#')
+
+WELCOME_BONUS_AMOUNT = config('WELCOME_BONUS_AMOUNT', default='1000', cast=Decimal)

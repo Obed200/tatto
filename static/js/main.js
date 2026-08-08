@@ -1,4 +1,4 @@
-console.log('Ribural static files loaded.');
+console.log('Tatto Mark Investment static files loaded.');
 
 function setupMobileNav() {
 	const toggle = document.getElementById('navToggle');
@@ -46,7 +46,7 @@ function setupReferralShare() {
 	if (shareBtn && navigator.share) {
 		shareBtn.addEventListener('click', async () => {
 			try {
-				await navigator.share({ title: 'Join Ribural', text: 'Join Ribural Investments', url: link });
+				await navigator.share({ title: 'Join Tatto Mark Investment', text: 'Join Tatto Mark Investment', url: link });
 			} catch (err) {
 				console.warn('Share failed', err);
 			}

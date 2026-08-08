@@ -1,25 +1,25 @@
 {% extends 'base.html' %}
 {% load humanize %}
 
-{% block title %}RIBURAL INVESTMENTS{% endblock %}
+{% block title %}TATTO MARK INVESTMENT{% endblock %}
 
 {% block content %}
 <section class="hero">
     <div class="hero-copy">
         <p class="eyebrow">A continuous investment platform</p>
-        <h1>RIBURAL INVESTMENTS</h1>
+        <h1>TATTO MARK INVESTMENT</h1>
         <p class="hero-line">Grow Consistently. Earn Daily. Build Your Future.</p>
         <div class="hero-actions">
             <a class="btn primary" href="{% url 'accounts:register' %}">Start Investing</a>
-            <a class="btn ghost" href="{% url 'investments:plan_list' %}">View Library</a>
+            
             {% if site_settings.whatsapp_community_link or site_settings.telegram_community_link %}
                 <a class="btn dark" href="{% if site_settings.whatsapp_community_link %}{{ site_settings.whatsapp_community_link }}{% else %}{{ site_settings.telegram_community_link }}{% endif %}">Join Community</a>
             {% endif %}
         </div>
     </div>
     <div class="hero-panel">
-        <span class="book-icon">IB</span>
-        <strong>Your investment library for financial freedom</strong>
+        <span class="book-icon">TMI</span>
+        <strong>Your Tatto Mark Investment for financial freedom</strong>
     </div>
 </section>
 
@@ -32,7 +32,7 @@
 
 <section class="section-head">
     <p class="eyebrow">Investment products</p>
-    <h2>Our Investment Library</h2>
+    <h2>Our Tatto Investment</h2>
 </section>
 
 <section class="plan-grid">
@@ -46,12 +46,24 @@
                 <div><span>Revenue</span><strong>{{ plan.total_revenue|floatformat:0|intcomma }} RWF</strong></div>
             </div>
             <div style="margin-top:14px; display:flex; gap:8px;">
-                <a class="btn primary full" href="{% url 'payments:deposit_create' %}?plan={{ plan.id }}">Invest Now</a>
+                <a class="btn primary full" href="{% url 'payments:deposit_create' %}?plan={{ plan.id }}">Start Investment</a>
             </div>
         </article>
     {% empty %}
         <article class="panel">Investment products will appear here soon.</article>
     {% endfor %}
+</section>
+
+<section style="margin-top:18px;">
+    <div class="panel" style="display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;">
+        <div>
+            <h3 style="margin:0 0 6px;">Get a 1,000 RWF Welcome Bonus</h3>
+            <p style="margin:0;">Every new member gets an upcoming welcome bonus of 1,000 RWF. It is added to your balance once the admin approves your initial payment, and it is paid only once, since it is a one-time welcome bonus.</p>
+        </div>
+        <div>
+            <a class="btn primary" href="{% url 'accounts:register' %}">Get Started</a>
+        </div>
+    </div>
 </section>
 
 <section style="margin-top:18px;">
@@ -73,14 +85,7 @@
             <p>{{ announcement.message }}</p>
         </article>
     {% endfor %}
-    <article>
-        <h2>How It Works</h2>
-        <p>Choose a product, pay using MTN MoMo code, upload your screenshot, and wait for admin approval. Once approved, your investment starts earning daily income.</p>
-    </article>
-    <article>
-        <h2>Referral Program</h2>
-        <p>Invite friends with your referral code and receive 10% after their first approved investment.</p>
-    </article>
+
     <article>
         <h2>Join the Community</h2>
         <div class="community-actions">

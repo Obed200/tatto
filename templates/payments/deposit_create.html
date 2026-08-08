@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load humanize %}
 
-{% block title %}Deposit | Ribural{% endblock %}
+{% block title %}Deposit | Tatto Mark Investment{% endblock %}
 
 {% block content %}
 <section class="section-head">
@@ -9,56 +9,68 @@
     <h1>Start Investment</h1>
 </section>
 
-{% if selected_plan %}
-<div class="plan-summary" style="margin-bottom:20px;">
-    <span class="badge active">Selected plan</span>
-    <h3>{{ selected_plan.name }}</h3>
-    <div class="plan-price">{{ selected_plan.amount|floatformat:0|intcomma }} RWF</div>
-    <div class="detail-list">
-        <div><span>Daily income</span><strong>{{ selected_plan.daily_income|floatformat:0|intcomma }} RWF</strong></div>
-        <div><span>Duration</span><strong>{{ selected_plan.duration_days }} days</strong></div>
-        <div><span>Total revenue</span><strong>{{ selected_plan.total_revenue|floatformat:0|intcomma }} RWF</strong></div>
-    </div>
-</div>
-{% endif %}
+<div class="checkout-shell">
+    <div class="checkout-steps">
+        <article class="panel step-card payment-instructions">
+            <span class="step-badge">1</span>
+            <h2>Pay First</h2>
+            <p>Send <strong>{% if selected_plan %}{{ selected_plan.amount|floatformat:0|intcomma }} RWF{% else %}your plan amount{% endif %}</strong> to the MTN MoMo pay code:</p>
+            <p class="payment-code">{{ payment_code }}</p>
+            <a class="btn primary full" href="tel:*182*8*1*{{ payment_code }}%23">Dial *182*8*1*{{ payment_code }}#</a>
+            <p class="muted">After payment, take a screenshot and upload it below for admin confirmation.</p>
+        </article>
 
-<div class="dashboard-grid">
-    <article class="panel payment-instructions">
-        <h2>1. Pay First</h2>
-        <p>Send <strong>{% if selected_plan %}{{ selected_plan.amount|floatformat:0|intcomma }} RWF{% else %}your plan amount{% endif %}</strong> to the MTN MoMo pay code:</p>
-        <p class="payment-code">{{ payment_code }}</p>
-        <a class="btn primary full" href="tel:*182*8*1*{{ payment_code }}%23">Dial *182*8*1*{{ payment_code }}#</a>
-        <p class="muted">After payment, take a screenshot and upload it below for admin confirmation.</p>
-    </article>
-    <article class="panel">
-        <h2>2. Upload Screenshot</h2>
-        {% if active_or_pending %}
-            <div class="message warning" style="margin:0;">You already have an active or pending investment. Please wait for it to complete or for admin review.</div>
-        {% else %}
-            <form method="post" enctype="multipart/form-data" class="stack-form">
-                {% csrf_token %}
-                {% if selected_plan %}
-                    <input type="hidden" name="plan" value="{{ selected_plan.id }}">
-                {% else %}
+        <article class="panel step-card">
+            <span class="step-badge">2</span>
+            <h2>Upload Screenshot</h2>
+            {% if active_or_pending %}
+                <div class="message warning" style="margin:0;">You already have an active or pending investment. Please wait for it to complete or for admin review.</div>
+            {% else %}
+                <form method="post" enctype="multipart/form-data" class="stack-form">
+                    {% csrf_token %}
+                    {% if selected_plan %}
+                        <input type="hidden" name="plan" value="{{ selected_plan.id }}">
+                    {% else %}
+                        <p>
+                            <label for="{{ form.plan.id_for_label }}">Choose a plan</label>
+                            {{ form.plan }}
+                            {{ form.plan.errors }}
+                        </p>
+                    {% endif %}
                     <p>
-                        <label for="{{ form.plan.id_for_label }}">Choose a plan</label>
-                        {{ form.plan }}
-                        {{ form.plan.errors }}
+                        <label for="{{ form.proof.id_for_label }}">Payment screenshot</label>
+                        {{ form.proof }}
+                        {{ form.proof.errors }}
+                        <span class="helptext">PNG or JPG, up to 5MB.</span>
                     </p>
-                {% endif %}
-                <p>
-                    <label for="{{ form.proof.id_for_label }}">Payment screenshot</label>
-                    {{ form.proof }}
-                    {{ form.proof.errors }}
-                    <span class="helptext">PNG or JPG, up to 5MB.</span>
-                </p>
-                <button class="btn primary full" type="submit">Submit Proof</button>
-            </form>
-        {% endif %}
-    </article>
-</div>
+                    <button class="btn primary full" type="submit">Submit Proof</button>
+                </form>
+            {% endif %}
+        </article>
 
-{% if not selected_plan and not active_or_pending %}
-<p class="muted" style="margin-top:16px;">Tip: pick a plan straight from the <a class="mini-link" href="{% url 'investments:plan_list' %}">Investment Library</a> to skip choosing it here.</p>
-{% endif %}
+        {% if not selected_plan and not active_or_pending %}
+        <p class="muted">Tip: pick a plan straight from <a class="mini-link" href="{% url 'investments:plan_list' %}">Tatto Investment</a> to skip choosing it here.</p>
+        {% endif %}
+    </div>
+
+    <aside class="checkout-sidebar">
+        {% if selected_plan %}
+            <div class="plan-summary">
+                <span class="badge active">Selected plan</span>
+                <h3>{{ selected_plan.name }}</h3>
+                <div class="plan-price">{{ selected_plan.amount|floatformat:0|intcomma }} RWF</div>
+                <div class="detail-list">
+                    <div><span>Daily income</span><strong>{{ selected_plan.daily_income|floatformat:0|intcomma }} RWF</strong></div>
+                    <div><span>Duration</span><strong>{{ selected_plan.duration_days }} days</strong></div>
+                    <div><span>Total revenue</span><strong>{{ selected_plan.total_revenue|floatformat:0|intcomma }} RWF</strong></div>
+                </div>
+            </div>
+        {% else %}
+            <div class="panel">
+                <h2 style="margin-top:0;">No plan selected yet</h2>
+                <p class="muted" style="margin:0;">Choose a plan in step 2, or browse <a class="mini-link" href="{% url 'investments:plan_list' %}">Tatto Investment</a> first.</p>
+            </div>
+        {% endif %}
+    </aside>
+</div>
 {% endblock %}

@@ -1,92 +1,100 @@
 {% extends 'base.html' %}
 {% load humanize %}
 
-{% block title %}Dashboard | Ribural{% endblock %}
+{% block title %}Dashboard | Tatto Mark Investment{% endblock %}
 
 {% block content %}
 <section class="section-head">
     <p class="eyebrow">Welcome {{ user.profile.full_name }}</p>
     <h1>User Dashboard</h1>
 </section>
+
 <section class="stats-grid">
     <article><span>Current Balance</span><strong>{{ wallet.current_balance|floatformat:0|intcomma }} RWF</strong></article>
     <article><span>Today's Earnings</span><strong>{{ todays_earnings|floatformat:0|intcomma }} RWF</strong></article>
     <article><span>Referral Bonus</span><strong>{{ wallet.referral_bonus|floatformat:0|intcomma }} RWF</strong></article>
+    <article><span>Welcome Bonus</span><strong>{{ wallet.welcome_bonus|floatformat:0|intcomma }} RWF</strong></article>
     <article><span>Referrals</span><strong>{{ referral_count }}</strong></article>
 </section>
 
-<section class="quick-actions">
-    <a class="btn primary" href="{% url 'payments:deposit_create' %}">Deposit</a>
-    <a class="btn dark" href="{% url 'payments:withdrawal_create' %}">Withdraw</a>
-    <a class="btn ghost" href="{% url 'referrals:referral_list' %}">Invite Friends</a>
-    <a class="btn ghost" href="{% url 'accounts:profile' %}">Profile</a>
-</section>
+<div class="dash-shell">
+    <div class="dash-main">
+        <article class="panel">
+            <h2>Active Investment</h2>
+            {% if active_investment %}
+                <p><strong>{{ active_investment.plan.name }}</strong></p>
+                <p>{{ active_investment.days_remaining }} days remaining</p>
+                <p>Earned: {{ active_investment.total_earned|floatformat:0|intcomma }} RWF</p>
+                <a class="mini-link" href="{% url 'investments:investment_detail' active_investment.id %}">Details</a>
+            {% else %}
+                <p>No active investment.</p>
+            {% endif %}
+        </article>
 
-<div class="dashboard-grid">
-    <article class="panel">
-        <h2>Active Investment</h2>
-        {% if active_investment %}
-            <p><strong>{{ active_investment.plan.name }}</strong></p>
-            <p>{{ active_investment.days_remaining }} days remaining</p>
-            <p>Earned: {{ active_investment.total_earned|floatformat:0|intcomma }} RWF</p>
-            <a class="mini-link" href="{% url 'investments:investment_detail' active_investment.id %}">Details</a>
-        {% else %}
-            <p>No active investment.</p>
-        {% endif %}
-    </article>
-    <article class="panel">
-        <h2>Pending Requests</h2>
-        <ul class="list">
-            <li>
-                <span>Deposit</span>
-                {% if pending_deposit %}
-                    <span class="badge pending">{{ pending_deposit.amount|floatformat:0|intcomma }} RWF · awaiting</span>
-                {% else %}
-                    <small>None</small>
-                {% endif %}
-            </li>
-            <li>
-                <span>Withdrawal</span>
-                {% if pending_withdrawal %}
-                    <span class="badge pending">{{ pending_withdrawal.amount|floatformat:0|intcomma }} RWF · awaiting</span>
-                {% else %}
-                    <small>None</small>
-                {% endif %}
-            </li>
-        </ul>
-    </article>
-    <article class="panel">
-        <h2>Community</h2>
-        <div class="community-actions">
-            {% if site_settings.whatsapp_community_link %}<a class="btn primary" href="{{ site_settings.whatsapp_community_link }}">Join WhatsApp</a>{% endif %}
-            {% if site_settings.telegram_community_link %}<a class="btn dark" href="{{ site_settings.telegram_community_link }}">Join Telegram</a>{% endif %}
-        </div>
-    </article>
-</div>
+        <article class="panel">
+            <h2>Latest Transactions</h2>
+            <ul class="list">
+                {% for transaction in transactions %}
+                    <li><span>{{ transaction.get_transaction_type_display }}</span><strong>{{ transaction.amount|floatformat:0|intcomma }} RWF</strong></li>
+                {% empty %}
+                    <li>No transactions yet.</li>
+                {% endfor %}
+            </ul>
+        </article>
 
-<div class="dashboard-grid">
-    <article class="panel">
-        <h2>Latest Transactions</h2>
-        <ul class="list">
-            {% for transaction in transactions %}
-                <li><span>{{ transaction.get_transaction_type_display }}</span><strong>{{ transaction.amount|floatformat:0|intcomma }} RWF</strong></li>
-            {% empty %}
-                <li>No transactions yet.</li>
-            {% endfor %}
-        </ul>
-    </article>
-    <article class="panel">
-        <h2>Recent Notifications</h2>
-        <ul class="list">
-            {% for announcement in announcements %}
-                <li><span>{{ announcement.title }}</span><small>Announcement</small></li>
-            {% endfor %}
-            {% for notification in notifications %}
-                <li><span>{{ notification.title }}</span><small>{{ notification.created_at|date:"M d" }}</small></li>
-            {% empty %}
-                {% if not announcements %}<li>No notifications yet.</li>{% endif %}
-            {% endfor %}
-        </ul>
-    </article>
+        <article class="panel">
+            <h2>Recent Notifications</h2>
+            <ul class="list">
+                {% for announcement in announcements %}
+                    <li><span>{{ announcement.title }}</span><small>Announcement</small></li>
+                {% endfor %}
+                {% for notification in notifications %}
+                    <li><span>{{ notification.title }}</span><small>{{ notification.created_at|date:"M d" }}</small></li>
+                {% empty %}
+                    {% if not announcements %}<li>No notifications yet.</li>{% endif %}
+                {% endfor %}
+            </ul>
+        </article>
+    </div>
+
+    <aside class="dash-side">
+        <article class="panel quick-actions-vertical">
+            <h2 style="margin-top:0;">Quick Actions</h2>
+            <a class="btn primary full" href="{% url 'payments:deposit_create' %}">Deposit</a>
+            <a class="btn dark full" href="{% url 'payments:withdrawal_create' %}">Withdraw</a>
+            <a class="btn ghost full" href="{% url 'referrals:referral_list' %}">Invite Friends</a>
+            <a class="btn ghost full" href="{% url 'accounts:profile' %}">Profile</a>
+        </article>
+
+        <article class="panel">
+            <h2>Pending Requests</h2>
+            <ul class="list">
+                <li>
+                    <span>Deposit</span>
+                    {% if pending_deposit %}
+                        <span class="badge pending">{{ pending_deposit.amount|floatformat:0|intcomma }} RWF · awaiting</span>
+                    {% else %}
+                        <small>None</small>
+                    {% endif %}
+                </li>
+                <li>
+                    <span>Withdrawal</span>
+                    {% if pending_withdrawal %}
+                        <span class="badge pending">{{ pending_withdrawal.amount|floatformat:0|intcomma }} RWF · awaiting</span>
+                    {% else %}
+                        <small>None</small>
+                    {% endif %}
+                </li>
+            </ul>
+        </article>
+
+        <article class="panel">
+            <h2>Community</h2>
+            <div class="community-actions">
+                {% if site_settings.whatsapp_community_link %}<a class="btn primary" href="{{ site_settings.whatsapp_community_link }}">Join WhatsApp</a>{% endif %}
+                {% if site_settings.telegram_community_link %}<a class="btn dark" href="{{ site_settings.telegram_community_link }}">Join Telegram</a>{% endif %}
+            </div>
+        </article>
+    </aside>
 </div>
 {% endblock %}

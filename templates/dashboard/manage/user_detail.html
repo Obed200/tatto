@@ -1,7 +1,7 @@
 {% extends 'dashboard/admin_base.html' %}
 {% load humanize %}
 
-{% block title %}{{ account.profile.full_name|default:account.username }} | Ribural{% endblock %}
+{% block title %}{{ account.profile.full_name|default:account.username }} | Tatto Mark Investment{% endblock %}
 
 {% block admin_content %}
 <div class="manage-head">
@@ -22,6 +22,7 @@
     <article><span>Total Earned</span><strong>{{ total_earned|floatformat:0|intcomma }} RWF</strong></article>
     <article><span>Today's Earnings</span><strong>{{ todays_earnings|floatformat:0|intcomma }} RWF</strong></article>
     <article><span>Referral Bonus</span><strong>{{ account.wallet.referral_bonus|floatformat:0|intcomma }} RWF</strong></article>
+    <article><span>Welcome Bonus</span><strong>{{ account.wallet.welcome_bonus|floatformat:0|intcomma }} RWF</strong></article>
     <article><span>Total Deposited</span><strong>{{ total_deposited|floatformat:0|intcomma }} RWF</strong></article>
     <article><span>Total Withdrawn</span><strong>{{ total_withdrawn|floatformat:0|intcomma }} RWF</strong></article>
     <article><span>Referrals</span><strong>{{ referrals|length }}</strong></article>

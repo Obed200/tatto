@@ -57,6 +57,7 @@ class Deposit(models.Model):
             status=Transaction.COMPLETED,
             description=f"Approved deposit for {self.plan.name}",
         )
+        self._pay_welcome_bonus()
         self._pay_referral_bonus()
         Notification.objects.create(
             user=self.user,
@@ -85,6 +86,24 @@ class Deposit(models.Model):
             user=self.user,
             title="Deposit Rejected",
             message=note or "Your payment proof was rejected. Please contact support.",
+        )
+
+    def _pay_welcome_bonus(self):
+        profile = self.user.profile
+        if profile.welcome_bonus_paid:
+            return
+        from django.conf import settings
+        from notifications.models import Notification
+        from transactions.models import Transaction
+
+        amount = settings.WELCOME_BONUS_AMOUNT
+        self.user.wallet.credit(amount, Transaction.WELCOME_BONUS, "One-time welcome bonus")
+        profile.welcome_bonus_paid = True
+        profile.save(update_fields=["welcome_bonus_paid"])
+        Notification.objects.create(
+            user=self.user,
+            title="Welcome Bonus Received",
+            message=f"You received a {amount:,.0f} RWF welcome bonus, added to your balance.",
         )
 
     def _pay_referral_bonus(self):

@@ -18,7 +18,7 @@ def deposit_create(request):
     ).exists() or Deposit.objects.filter(user=request.user, status=Deposit.PENDING).exists()
     plans = InvestmentPlan.objects.filter(is_active=True)
 
-    # The plan may be chosen from the Library ("Invest" button) and carried here
+    # The plan may be chosen from Tatto Investment ("Invest" button) and carried here
     # via ?plan=<id> so the user never has to pick it again.
     plan_id = request.POST.get("plan") or request.GET.get("plan")
     selected_plan = plans.filter(pk=plan_id).first() if plan_id else None
@@ -55,6 +55,8 @@ def deposit_create(request):
 
 @login_required
 def withdrawal_create(request):
+    for investment in request.user.investments.filter(status=Investment.ACTIVE):
+        investment.credit_due_earnings()
     form = WithdrawalForm(request.POST or None, initial={"phone_number": request.user.profile.phone_number})
     if request.method == "POST" and form.is_valid():
         withdrawal = form.save(commit=False)

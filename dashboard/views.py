@@ -209,6 +209,7 @@ def user_edit(request, pk):
         "withdrawable_balance": wallet.withdrawable_balance,
         "referral_bonus": wallet.referral_bonus,
         "daily_earnings": wallet.daily_earnings,
+        "welcome_bonus": wallet.welcome_bonus,
     }
     form = UserAdminForm(request.POST or None, account=account, initial=initial)
     if request.method == "POST" and form.is_valid():
@@ -227,8 +228,10 @@ def user_edit(request, pk):
                 wallet.withdrawable_balance = cd["withdrawable_balance"]
                 wallet.referral_bonus = cd["referral_bonus"]
                 wallet.daily_earnings = cd["daily_earnings"]
+                wallet.welcome_bonus = cd["welcome_bonus"]
                 wallet.save(update_fields=[
-                    "current_balance", "withdrawable_balance", "referral_bonus", "daily_earnings",
+                    "current_balance", "withdrawable_balance", "referral_bonus",
+                    "daily_earnings", "welcome_bonus",
                 ])
         except IntegrityError:
             form.add_error("phone_number", "Another account already uses this phone number.")

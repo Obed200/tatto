@@ -13,7 +13,7 @@ class SiteSettings(models.Model):
         verbose_name_plural = "Site settings"
 
     def __str__(self):
-        return "Ribural community links"
+        return "Tatto Mark Investment community links"
 
     @classmethod
     def load(cls):

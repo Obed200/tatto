@@ -14,6 +14,7 @@ class UserAdminForm(forms.Form):
     withdrawable_balance = forms.DecimalField(max_digits=12, decimal_places=2)
     referral_bonus = forms.DecimalField(max_digits=12, decimal_places=2)
     daily_earnings = forms.DecimalField(max_digits=12, decimal_places=2)
+    welcome_bonus = forms.DecimalField(max_digits=12, decimal_places=2)
 
     def __init__(self, *args, account=None, **kwargs):
         self.account = account

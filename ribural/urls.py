@@ -21,8 +21,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path, re_path
 from django.views.static import serve
 
-admin.site.site_header = "RIBURAL INVESTMENTS Admin"
-admin.site.site_title = "RIBURAL Admin"
+admin.site.site_header = "TATTO MARK INVESTMENT Admin"
+admin.site.site_title = "TATTO MARK Admin"
 admin.site.index_title = "Investment Platform Administration"
 
 urlpatterns = [

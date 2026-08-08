@@ -5,19 +5,18 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#0f172a">
-    <title>{% block title %}RIBURAL INVESTMENTS{% endblock %}</title>
+    <meta name="theme-color" content="#050b08">
+    <title>{% block title %}TATTO MARK INVESTMENT{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <header class="site-header">
         <a href="{% url 'core:index' %}" class="brand">
-            <span class="brand-mark">R</span>
-            <span>RIBURAL <strong>INVESTMENTS</strong></span>
+            <span class="brand-mark">T</span>
+            <span>TATTO MARK <strong>INVESTMENT</strong></span>
         </a>
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
         <nav id="siteNav">
-            <a href="{% url 'investments:plan_list' %}">Library</a>
             {% if user.is_authenticated %}
                 {% if user.wallet %}
                     <a href="{% url 'dashboard:user_dashboard' %}" class="wallet-chip"><span class="dot"></span>{{ user.wallet.current_balance|floatformat:0|intcomma }} RWF</a>
@@ -46,7 +45,7 @@
         {% block content %}{% endblock %}
     </main>
     <footer class="site-footer">
-        <strong>RIBURAL INVESTMENTS</strong>
+        <strong>TATTO MARK INVESTMENT</strong>
         <span>Building wealth, one day at a time.</span>
     </footer>
     <script src="{% static 'js/main.js' %}"></script>

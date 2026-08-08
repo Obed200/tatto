@@ -10,6 +10,7 @@ class Wallet(models.Model):
     withdrawable_balance = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal("0.00"))
     referral_bonus = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal("0.00"))
     daily_earnings = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal("0.00"))
+    welcome_bonus = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal("0.00"))
     updated_at = models.DateTimeField(auto_now=True)
 
     def credit(self, amount, transaction_type, description=""):
@@ -20,7 +21,12 @@ class Wallet(models.Model):
             self.referral_bonus += amount
         if transaction_type == Transaction.EARNING:
             self.daily_earnings += amount
-        self.save(update_fields=["current_balance", "withdrawable_balance", "referral_bonus", "daily_earnings", "updated_at"])
+        if transaction_type == Transaction.WELCOME_BONUS:
+            self.welcome_bonus += amount
+        self.save(update_fields=[
+            "current_balance", "withdrawable_balance", "referral_bonus",
+            "daily_earnings", "welcome_bonus", "updated_at",
+        ])
         return Transaction.objects.create(
             user=self.user,
             transaction_type=transaction_type,
@@ -51,6 +57,7 @@ class Transaction(models.Model):
     WITHDRAWAL = "withdrawal"
     EARNING = "earning"
     REFERRAL = "referral"
+    WELCOME_BONUS = "welcome_bonus"
 
     PENDING = "pending"
     COMPLETED = "completed"
@@ -61,6 +68,7 @@ class Transaction(models.Model):
         (WITHDRAWAL, "Withdrawal"),
         (EARNING, "Daily earning"),
         (REFERRAL, "Referral bonus"),
+        (WELCOME_BONUS, "Welcome bonus"),
     ]
     STATUS_CHOICES = [
         (PENDING, "Pending"),

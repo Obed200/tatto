@@ -26,6 +26,7 @@ class Profile(models.Model):
         related_name="referred_users",
     )
     first_referral_bonus_paid = models.BooleanField(default=False)
+    welcome_bonus_paid = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
