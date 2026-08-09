@@ -5,17 +5,34 @@
 {% block content %}
 <section class="section-head">
     <p class="eyebrow">Invite friends</p>
-    <h1>{{ user.profile.referral_code }}</h1>
-    <p>Share your referral code. You receive 10% after a referred user's first approved investment.</p>
+    <h1>Referrals</h1>
 </section>
-<article class="panel">
-    <h2>Your Referrals</h2>
-    <ul class="list">
-        {% for referral in referrals %}
-            <li><span>{{ referral.full_name }}</span><small>{{ referral.created_at|date:"M d, Y" }}</small></li>
-        {% empty %}
-            <li>No referrals yet.</li>
-        {% endfor %}
-    </ul>
-</article>
+
+<div class="dashboard-grid">
+    <article class="panel">
+        <h2>Referral</h2>
+        <p class="metric-big">{{ user.profile.referral_code }}</p>
+        <p>Share this code with friends. You earn 10% after their first approved investment.</p>
+        {% url 'accounts:register' as reg_url %}
+        {% with full_link=request.scheme|add:"://"|add:request.get_host|add:reg_url|add:"?ref="|add:user.profile.referral_code %}
+            <p style="margin-top:8px;">Your referral link:</p>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <button class="btn" id="copyReferral" data-link="{{ full_link }}">Copy</button>
+                <button class="btn primary" id="shareReferral" data-link="{{ full_link }}">Share</button>
+            </div>
+        {% endwith %}
+        <p><strong>Registered:</strong> {{ user.profile.created_at|date:"M d, Y" }}</p>
+    </article>
+
+    <article class="panel">
+        <h2>Your Referrals</h2>
+        <ul class="list">
+            {% for referral in referrals %}
+                <li><span>{{ referral.full_name }}</span><small>{{ referral.created_at|date:"M d, Y" }}</small></li>
+            {% empty %}
+                <li>No referrals yet.</li>
+            {% endfor %}
+        </ul>
+    </article>
+</div>
 {% endblock %}
