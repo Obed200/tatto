@@ -15,7 +15,7 @@
             <span class="step-badge">1</span>
             <h2>Pay First</h2>
             <p>Send <strong>{% if selected_plan %}{{ selected_plan.amount|floatformat:0|intcomma }} RWF{% else %}your plan amount{% endif %}</strong> to the MTN MoMo pay code:</p>
-            <p class="payment-code">{{ payment_code }}</p>
+            <p class="payment-code">{{ payment_code }} <br><small> Name: CEDRICK</small></p>
             <a class="btn primary full" href="tel:*182*8*1*{{ payment_code }}%23">Dial *182*8*1*{{ payment_code }}#</a>
             <p class="muted">After payment, take a screenshot and upload it below for admin confirmation.</p>
         </article>

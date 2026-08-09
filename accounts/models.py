@@ -8,7 +8,7 @@ from django.dispatch import receiver
 
 def generate_referral_code():
     while True:
-        code = f"RIB{random.randint(100000, 999999)}"
+        code = f"Tatto{random.randint(100000, 999999)}"
         if not Profile.objects.filter(referral_code=code).exists():
             return code
 

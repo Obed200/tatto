@@ -25,10 +25,8 @@
         {% with full_link=request.scheme|add:"://"|add:request.get_host|add:reg_url|add:"?ref="|add:user.profile.referral_code %}
             <p style="margin-top:8px;">Your referral link:</p>
             <div style="display:flex; gap:8px; align-items:center;">
-                <input id="referralLink" readonly style="flex:1; padding:8px; border-radius:6px; border:1px solid var(--line);" value="{{ full_link }}">
-                <button class="btn" id="copyReferral">Copy</button>
-                <button class="btn primary" id="shareReferral">Share</button>
-                <a id="waShare" class="btn" href="" target="_blank">WhatsApp</a>
+                <button class="btn" id="copyReferral" data-link="{{ full_link }}">Copy</button>
+                <button class="btn primary" id="shareReferral" data-link="{{ full_link }}">Share</button>
             </div>
         {% endwith %}
         <p><strong>Registered:</strong> {{ user.profile.created_at|date:"M d, Y" }}</p>

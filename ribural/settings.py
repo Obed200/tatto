@@ -143,7 +143,7 @@ LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'dashboard:user_dashboard'
 LOGOUT_REDIRECT_URL = 'core:index'
 
-PAYMENT_CODE = config('PAYMENT_CODE', default='1586407')
+PAYMENT_CODE = config('PAYMENT_CODE', default='2207860')
 PAYMENT_USSD = config('PAYMENT_USSD', default=f'*182*8*1*{PAYMENT_CODE}#')
 
 WELCOME_BONUS_AMOUNT = config('WELCOME_BONUS_AMOUNT', default='1000', cast=Decimal)

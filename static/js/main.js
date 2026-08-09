@@ -27,19 +27,27 @@ document.addEventListener('DOMContentLoaded', setupMobileNav);
 function setupReferralShare() {
 	const copyBtn = document.getElementById('copyReferral');
 	const shareBtn = document.getElementById('shareReferral');
-	const waBtn = document.getElementById('waShare');
-	const input = document.getElementById('referralLink');
-	if (!input) return;
-	const link = input.value;
+	const link = (copyBtn && copyBtn.dataset.link) || (shareBtn && shareBtn.dataset.link);
+	if (!link) return;
 	if (copyBtn) {
-		copyBtn.addEventListener('click', () => {
-			input.select();
+		copyBtn.addEventListener('click', async () => {
 			try {
-				document.execCommand('copy');
+				if (navigator.clipboard && navigator.clipboard.writeText) {
+					await navigator.clipboard.writeText(link);
+				} else {
+					const temp = document.createElement('textarea');
+					temp.value = link;
+					temp.style.position = 'fixed';
+					temp.style.opacity = '0';
+					document.body.appendChild(temp);
+					temp.select();
+					document.execCommand('copy');
+					document.body.removeChild(temp);
+				}
 				copyBtn.textContent = 'Copied';
 				setTimeout(() => copyBtn.textContent = 'Copy', 2000);
 			} catch (e) {
-				alert('Copy failed. Please select and copy manually.');
+				alert('Copy failed. Please copy the link manually: ' + link);
 			}
 		});
 	}
@@ -53,9 +61,6 @@ function setupReferralShare() {
 		});
 	} else if (shareBtn) {
 		shareBtn.style.display = 'none';
-	}
-	if (waBtn) {
-		waBtn.href = `https://wa.me/?text=${encodeURIComponent(link)}`;
 	}
 }
 
