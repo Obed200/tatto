@@ -17,7 +17,7 @@ def register(request):
     initial = {}
     ref = request.GET.get('ref') or request.GET.get('referral') or request.GET.get('r')
     if ref:
-        initial['referral_code'] = ref.strip().upper()
+        initial['referral_code'] = ref.strip()
     form = RegisterForm(request.POST or None, initial=initial)
     if request.method == "POST" and form.is_valid():
         try:

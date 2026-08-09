@@ -22,10 +22,15 @@ class RegisterForm(UserCreationForm):
         return phone_number
 
     def clean_referral_code(self):
-        code = self.cleaned_data.get("referral_code", "").strip().upper()
-        if code and not Profile.objects.filter(referral_code=code).exists():
+        code = self.cleaned_data.get("referral_code", "").strip()
+        if not code:
+            return code
+        profile = Profile.objects.filter(referral_code__iexact=code).first()
+        if not profile:
             raise forms.ValidationError("Referral code was not found.")
-        return code
+        # Normalize to the exact stored code so save() can match it precisely,
+        # regardless of the case the referral link/user typed it in.
+        return profile.referral_code
 
     def save(self, commit=True):
         from django.contrib.auth import get_user_model
